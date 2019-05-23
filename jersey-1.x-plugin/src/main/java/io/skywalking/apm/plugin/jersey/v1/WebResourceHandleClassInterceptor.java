@@ -37,6 +37,7 @@ import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.EnhancedI
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.InstanceMethodsAroundInterceptor;
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.MethodInterceptResult;
 import org.apache.skywalking.apm.network.trace.component.ComponentsDefine;
+import org.apache.skywalking.apm.network.trace.component.OfficialComponent;
 
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -49,6 +50,7 @@ import java.net.URL;
  */
 public class WebResourceHandleClassInterceptor implements InstanceMethodsAroundInterceptor {
 
+    private static final OfficialComponent JERSEY_CLIENT = new OfficialComponent(60, "Jersey-Client");
 
     @Override
     public void beforeMethod(
@@ -67,8 +69,8 @@ public class WebResourceHandleClassInterceptor implements InstanceMethodsAroundI
             operationName = "/";
         }
         AbstractSpan span = ContextManager.createExitSpan(operationName, contextCarrier, remotePeer);
-        //TODO: 需扩展lib - jersey client, 现有jetty替代
-        span.setComponent(ComponentsDefine.JETTY_CLIENT);
+        //需在服务端的配置component-libraries.yml中添加对应序号
+        span.setComponent(JERSEY_CLIENT);
         Tags.HTTP.METHOD.set(span, clientRequest.getMethod());
         Tags.URL.set(span, url.toString());
         SpanLayer.asHttp(span);

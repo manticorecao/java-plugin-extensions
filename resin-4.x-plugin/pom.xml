@@ -37,7 +37,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <resin.version>4.0.41</resin.version>
+        <resin.version>4.0.52</resin.version>
         <javax-servlet-api.version>3.0.1</javax-servlet-api.version>
     </properties>
 
@@ -47,6 +47,12 @@
             <artifactId>resin</artifactId>
             <version>${resin.version}</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.mail</groupId>
+                    <artifactId>mail</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
